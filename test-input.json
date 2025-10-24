@@ -1,0 +1,93 @@
+{
+  "repository": "michaeltomlinsontuks/issueTool",
+  "defaults": {
+    "labels": ["enhancement"],
+    "assignees": []
+  },
+  "issues": [
+    {
+      "id": "testing",
+      "title": "Testing & Quality Assurance",
+      "body": "Comprehensive testing suite for the GitHub Issue Hierarchy tool.\n\n## Goals\n- Unit tests for all modules\n- Integration tests with mocked GitHub\n- End-to-end testing\n- Test coverage reporting",
+      "parent_id": null,
+      "labels": ["testing", "epic"]
+    },
+    {
+      "id": "testing.unit",
+      "title": "Unit Tests for Core Modules",
+      "body": "Create unit tests for all core modules.\n\n### Modules to test:\n- `validator.py` - JSON schema validation, circular dependency detection\n- `fingerprint.py` - Hash generation consistency\n- `graph.py` - Topological sort, depth calculation\n- `state_manager.py` - Database operations\n- `utils.py` - Helper functions",
+      "parent_id": "testing",
+      "labels": ["testing", "unit-tests"]
+    },
+    {
+      "id": "testing.integration",
+      "title": "Integration Tests with Mocked GitHub",
+      "body": "Test full workflow with mocked GitHub API calls.\n\n### Test scenarios:\n- Complete run with multiple levels of hierarchy\n- Resume logic with partial completion\n- Duplicate detection\n- Error handling and retries",
+      "parent_id": "testing",
+      "labels": ["testing", "integration-tests"]
+    },
+    {
+      "id": "documentation",
+      "title": "Documentation Improvements",
+      "body": "Enhance documentation for better user experience.\n\n## Areas to improve\n- API documentation\n- Troubleshooting guide\n- Video walkthrough\n- Contributing guidelines",
+      "parent_id": null,
+      "labels": ["documentation", "epic"]
+    },
+    {
+      "id": "documentation.api",
+      "title": "Module API Documentation",
+      "body": "Generate comprehensive API documentation using Sphinx or similar.\n\n- Set up documentation framework\n- Document all public functions and classes\n- Add code examples\n- Generate HTML output",
+      "parent_id": "documentation",
+      "labels": ["documentation"]
+    },
+    {
+      "id": "documentation.troubleshooting",
+      "title": "Expanded Troubleshooting Guide",
+      "body": "Create detailed troubleshooting guide with common issues and solutions.\n\n### Topics to cover:\n- Authentication errors\n- Rate limiting\n- Network timeouts\n- Database corruption recovery\n- Permission errors",
+      "parent_id": "documentation",
+      "labels": ["documentation"]
+    },
+    {
+      "id": "features",
+      "title": "Future Feature Enhancements",
+      "body": "New features to enhance the tool's capabilities.\n\n## Planned features\n- Parallel issue creation\n- Issue templates support\n- Batch operations\n- MCP integration",
+      "parent_id": null,
+      "labels": ["feature", "epic"]
+    },
+    {
+      "id": "features.parallel",
+      "title": "Parallel Issue Creation",
+      "body": "Enable parallel creation of independent issue trees for faster execution.\n\n### Implementation:\n- Identify independent subtrees in the graph\n- Use threading/async to create issues in parallel\n- Maintain proper error handling and state consistency\n- Add configuration option for max parallel workers",
+      "parent_id": "features",
+      "labels": ["feature", "performance"]
+    },
+    {
+      "id": "features.templates",
+      "title": "Issue Template Support",
+      "body": "Add support for GitHub issue templates.\n\n### Requirements:\n- Parse template variables from issue body\n- Support template inheritance\n- Validate template syntax\n- Add template examples to documentation",
+      "parent_id": "features",
+      "labels": ["feature"]
+    },
+    {
+      "id": "features.mcp",
+      "title": "Model Context Protocol (MCP) Integration",
+      "body": "Create MCP server wrapper for LLM integration.\n\n### Deliverables:\n- MCP server implementation\n- Tool definition for issue creation\n- Streaming progress updates\n- Error handling for LLM consumption\n- Example usage with Claude Code",
+      "parent_id": "features",
+      "labels": ["feature", "integration"]
+    },
+    {
+      "id": "maintenance",
+      "title": "Code Maintenance & Refactoring",
+      "body": "Ongoing maintenance and code quality improvements.\n\n## Tasks\n- Type hint coverage\n- Code formatting consistency\n- Error message improvements\n- Performance optimization",
+      "parent_id": null,
+      "labels": ["maintenance", "epic"]
+    },
+    {
+      "id": "maintenance.types",
+      "title": "Complete Type Hint Coverage",
+      "body": "Ensure all functions have complete type hints and pass mypy strict mode.\n\n- Add missing type hints\n- Fix any type errors\n- Configure mypy strict mode\n- Add pre-commit hook for type checking",
+      "parent_id": "maintenance",
+      "labels": ["maintenance", "typing"]
+    }
+  ]
+}
