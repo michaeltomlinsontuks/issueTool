@@ -1,0 +1,9 @@
+{
+  "state_db_path": ".state/state.db",
+  "log_directory": "logs/",
+  "log_level": "INFO",
+  "retry_attempts": 3,
+  "retry_backoff_seconds": 5,
+  "github_api_timeout_seconds": 30,
+  "enable_color": true
+}

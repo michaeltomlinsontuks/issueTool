@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "gh-issue-hierarchy"
+version = "1.0.0"
+description = "Autonomous CLI tool for creating hierarchical GitHub issues from JSON input"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+packages = [{include = "gh_issue_hierarchy"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+click = "^8.1.7"
+pygithub = "^2.1.1"
+jsonschema = "^4.20.0"
+rich = "^13.7.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+pytest-mock = "^3.12.0"
+black = "^23.12.0"
+isort = "^5.13.2"
+mypy = "^1.7.1"
+
+[tool.poetry.scripts]
+gh-issue-hierarchy = "gh_issue_hierarchy.cli:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

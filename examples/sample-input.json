@@ -1,0 +1,73 @@
+{
+  "repository": "owner/repo",
+  "defaults": {
+    "milestone": "MVP Sprint 1",
+    "labels": ["project"],
+    "assignees": []
+  },
+  "issues": [
+    {
+      "id": "backend",
+      "title": "Backend Development",
+      "body": "Complete all backend infrastructure and API development.\n\n## Goals\n- Set up database\n- Create REST API\n- Implement authentication",
+      "parent_id": null,
+      "labels": ["backend", "epic"]
+    },
+    {
+      "id": "backend.database",
+      "title": "Database Setup",
+      "body": "Set up PostgreSQL database with proper schema and migrations.\n\n### Tasks\n- Install PostgreSQL\n- Design schema\n- Create migration scripts\n- Set up connection pooling",
+      "parent_id": "backend",
+      "labels": ["database"]
+    },
+    {
+      "id": "backend.database.docker",
+      "title": "Docker Configuration for Database",
+      "body": "Create Docker Compose configuration for local PostgreSQL development.\n\n- Create docker-compose.yml\n- Configure environment variables\n- Add volume mounts for data persistence\n- Document setup in README",
+      "parent_id": "backend.database",
+      "labels": ["docker", "infrastructure"]
+    },
+    {
+      "id": "backend.database.migrations",
+      "title": "Database Migration System",
+      "body": "Implement database migration system using Alembic.\n\n- Install Alembic\n- Configure migration environment\n- Create initial migration\n- Add migration run scripts",
+      "parent_id": "backend.database",
+      "labels": ["database", "migrations"]
+    },
+    {
+      "id": "backend.api",
+      "title": "REST API Development",
+      "body": "Build REST API endpoints for the application.\n\n### Endpoints to create\n- `/api/users` - User management\n- `/api/auth` - Authentication\n- `/api/resources` - Resource CRUD operations",
+      "parent_id": "backend",
+      "labels": ["api", "backend"]
+    },
+    {
+      "id": "backend.api.auth",
+      "title": "Authentication API",
+      "body": "Implement authentication endpoints with JWT tokens.\n\n- POST /api/auth/login\n- POST /api/auth/register\n- POST /api/auth/refresh\n- POST /api/auth/logout",
+      "parent_id": "backend.api",
+      "labels": ["api", "authentication"]
+    },
+    {
+      "id": "frontend",
+      "title": "Frontend Development",
+      "body": "Complete all frontend development work.\n\n## Goals\n- Set up React application\n- Create component library\n- Implement routing\n- Connect to API",
+      "parent_id": null,
+      "labels": ["frontend", "epic"]
+    },
+    {
+      "id": "frontend.setup",
+      "title": "React Application Setup",
+      "body": "Initialize React application with Vite and configure development environment.\n\n- Create Vite project\n- Configure TypeScript\n- Set up ESLint and Prettier\n- Configure path aliases",
+      "parent_id": "frontend",
+      "labels": ["frontend", "setup"]
+    },
+    {
+      "id": "frontend.components",
+      "title": "Component Library",
+      "body": "Build reusable component library for the application.\n\n### Components needed\n- Button\n- Input\n- Card\n- Modal\n- Navigation",
+      "parent_id": "frontend",
+      "labels": ["frontend", "components"]
+    }
+  ]
+}

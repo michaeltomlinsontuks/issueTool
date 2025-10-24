@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/gh-issue-hierarchy/input-schema.json",
+  "title": "GitHub Issue Hierarchy Input",
+  "description": "Schema for hierarchical GitHub issue creation",
+  "type": "object",
+  "required": ["repository", "issues"],
+  "properties": {
+    "repository": {
+      "type": "string",
+      "description": "GitHub repository in format 'owner/repo'",
+      "pattern": "^[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+$"
+    },
+    "defaults": {
+      "type": "object",
+      "description": "Default values applied to all issues unless overridden",
+      "properties": {
+        "milestone": {
+          "type": "string",
+          "description": "Default milestone name"
+        },
+        "labels": {
+          "type": "array",
+          "description": "Default labels (merged with issue-specific labels)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assignees": {
+          "type": "array",
+          "description": "Default assignees",
+          "items": {
+            "type": "string"
+          }
+        },
+        "due_date": {
+          "type": "string",
+          "description": "Default due date in YYYY-MM-DD format",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "issues": {
+      "type": "array",
+      "description": "List of issues to create",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "title"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this issue (used for parent references)",
+            "pattern": "^[a-zA-Z0-9._-]+$"
+          },
+          "title": {
+            "type": "string",
+            "description": "Issue title",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "body": {
+            "type": "string",
+            "description": "Issue body/description (markdown supported)"
+          },
+          "parent_id": {
+            "type": ["string", "null"],
+            "description": "ID of parent issue (null for root issues)",
+            "pattern": "^[a-zA-Z0-9._-]+$"
+          },
+          "milestone": {
+            "type": "string",
+            "description": "Milestone name (overrides default)"
+          },
+          "labels": {
+            "type": "array",
+            "description": "Labels for this issue (merged with defaults)",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assignees": {
+            "type": "array",
+            "description": "Assignees for this issue (overrides default)",
+            "items": {
+              "type": "string"
+            }
+          },
+          "due_date": {
+            "type": "string",
+            "description": "Due date in YYYY-MM-DD format (overrides default)",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
