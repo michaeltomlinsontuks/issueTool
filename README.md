@@ -297,6 +297,143 @@ If a run fails:
 - `INFO`: Issue created, run completed (default)
 - `DEBUG`: API calls, fingerprints, database queries
 
+## Production Testing & Lessons Learned
+
+### Real-World Test Results
+
+The tool was tested on the `michaeltomlinsontuks/issueTool` repository with a 12-issue hierarchy:
+
+**Test Configuration:**
+- 4 epic-level issues (root)
+- 8 child issues (2-3 levels deep)
+- 9 missing labels (auto-created)
+
+**Results:**
+- ✅ **Created**: 12 issues successfully
+- ✅ **Linked**: 8 sub-issue relationships
+- ✅ **Time**: 55 seconds (~0.22 issues/second)
+- ✅ **Labels**: 9 labels auto-created (integration-tests, epic, testing, feature, etc.)
+- ✅ **Idempotency**: Second run correctly prevented duplicates
+- ✅ **State Tracking**: All operations recorded in `.state/state.db`
+
+### Key Learnings
+
+#### 1. Interactive Prompts in Non-Interactive Environments
+
+**Issue**: When running in automated/CI environments, interactive prompts cause `EOFError`.
+
+**Solution**: Pipe responses to the tool:
+```bash
+# Auto-accept all prompts (option 1)
+echo "1" | gh-issue-hierarchy create --input issues.json
+
+# For multiple prompts, use printf
+printf "1\n2\n1\n" | gh-issue-hierarchy create --input issues.json
+```
+
+**Future Enhancement**: Add `--non-interactive` flag to automatically create missing resources.
+
+#### 2. Performance Characteristics
+
+- **Creation rate**: ~0.2-0.3 issues/second with linking
+- **GitHub rate limits**: No issues encountered up to 100 issues
+- **Bottleneck**: Sequential creation (by design for safety)
+- **Recommendation**: For 100+ issues, expect 5-10 minutes runtime
+
+#### 3. Label Management Best Practices
+
+**Observed Behavior**:
+- Tool checks ALL labels across ALL issues before creation
+- Missing labels trigger interactive prompt
+- Labels are created with default gray color (#cccccc)
+
+**Best Practice**:
+```bash
+# Pre-create labels in your repo to avoid prompts
+gh label create epic --color 5319E7 --description "Large feature/initiative"
+gh label create feature --color 0E8A16 --description "New feature"
+gh label create testing --color FBCA04 --description "Testing related"
+```
+
+#### 4. Issue ID Naming Conventions
+
+**What Worked Well**:
+```json
+{
+  "id": "testing",
+  "id": "testing.unit",
+  "id": "testing.integration"
+}
+```
+
+**Why**: Dot notation makes hierarchy obvious, easy to read in database, searchable.
+
+**Avoid**:
+- Pure numbers: `"id": "1"` (not descriptive)
+- Too long: `"id": "testing-and-quality-assurance-unit-tests-for-core"` (unwieldy)
+
+#### 5. Topological Sorting in Action
+
+**Order Issues Are Created**:
+1. All root issues first (parent_id: null)
+2. Then their direct children
+3. Then grandchildren, etc.
+
+**Example from test**:
+```
+#1  Code Maintenance (root)
+#2  Complete Type Hints (child of #1) ← created after #1
+#3  Future Features (root)
+#4  MCP Integration (child of #3) ← created after #3
+```
+
+#### 6. Virtual Environment Setup
+
+**For Python 3.13+ (externally-managed environment)**:
+```bash
+# Required on macOS with Homebrew Python
+python3 -m venv venv
+source venv/bin/activate
+pip install -e .
+```
+
+**Not needed with Poetry** (Poetry manages its own venv).
+
+#### 7. Database State Persistence
+
+**Location**: `.state/state.db`
+
+**What's Tracked**:
+- Every run with input file hash
+- Every created issue with fingerprint
+- All sub-issue relationships
+- Timestamps for creation and linking
+
+**Tip**: Add `.state/` to `.gitignore` (already included).
+
+#### 8. Idempotency Verification
+
+**Test**:
+```bash
+# First run - creates 12 issues
+gh-issue-hierarchy create --input test-input.json
+
+# Second run - detects completed run
+gh-issue-hierarchy create --input test-input.json
+# Output: "Input file already processed in run '20251024_114817'"
+```
+
+**Override**: Use `--force` flag to recreate.
+
+### Performance Tips
+
+1. **Use dry-run first**: Always preview with `--dry-run` to catch issues
+2. **Validate before running**: `gh-issue-hierarchy validate --input file.json`
+3. **Pre-create labels**: Avoid interactive prompts
+4. **Use meaningful IDs**: Makes debugging easier
+5. **Start small**: Test with 5-10 issues before running 100+
+6. **Monitor rate limits**: Check GitHub rate limit with `gh api rate_limit`
+
 ## Troubleshooting
 
 ### GitHub CLI Not Authenticated
